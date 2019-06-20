@@ -13,41 +13,18 @@ import java.util.Map;
 //    Deque<Integer> stack = new ArrayDeque<Integer>();"
 
 public class JdcEngine
-{
+{    
     public static final Map<String, JdcCommand> commands;
     static {
         commands = new HashMap<>();
-        commands.put("+", new JdcCommand() {
-            @Override
-            public void apply(Deque<Double> dataStack) {
-                Double a = dataStack.pop();
-                Double b = dataStack.pop();
-                Double c = a + b;
-                dataStack.push(c);
-            }
-        });
-        commands.put("f", new JdcCommand() {
-            @Override
-            public void apply(Deque<Double> dataStack) {
-                dataStack.forEach(System.out::println);
-            }
-        });
-        commands.put("n", new JdcCommand() {
-            @Override
-            public void apply(Deque<Double> dataStack) {
-                if (!dataStack.isEmpty()) {
-                    System.out.println(dataStack.pop());
-                }
-            }
-        });
-        commands.put("p", new JdcCommand() {
-            @Override
-            public void apply(Deque<Double> dataStack) {
-                if (!dataStack.isEmpty()) {
-                    System.out.println(dataStack.peekFirst());
-                }
-            }
-        });
+        commands.put("+", ds -> ds.push(ds.pop() + ds.pop()));
+        commands.put("-", ds -> ds.push(ds.pop() - ds.pop()));
+        commands.put("*", ds -> ds.push(ds.pop() * ds.pop()));
+        commands.put("/", ds -> ds.push(ds.pop() / ds.pop()));
+        commands.put("c", ds -> ds.clear());
+        commands.put("f", ds -> ds.forEach(System.out::println));
+        commands.put("n", ds -> {if (!ds.isEmpty()) System.out.println(ds.pop());});
+        commands.put("p", ds -> {if (!ds.isEmpty()) System.out.println(ds.peekFirst());});
     };
 
     
@@ -70,5 +47,7 @@ public class JdcEngine
             }
         }
     }
+    
+    
     
 }
