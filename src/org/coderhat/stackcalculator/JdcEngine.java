@@ -23,9 +23,11 @@ public class JdcEngine
         commands.put("/", ds -> BiEval(ds, (BigDecimal x1, BigDecimal x2) -> x2.divide(x1)));
         commands.put("^", ds -> BiEval(ds, (BigDecimal x1, BigDecimal x2) -> x2.pow(x1.intValue())));
         commands.put("c", ds -> ds.clear());
+        commands.put("d", JdcEngine::dupTop2);
         commands.put("f", ds -> ds.forEach(System.out::println));
         commands.put("n", ds -> {if (!ds.isEmpty()) System.out.println(pop(ds));});
         commands.put("p", ds -> {if (!ds.isEmpty()) System.out.println(peek(ds));});
+        commands.put("r", JdcEngine::swapTop2);
     };
 
     
@@ -62,6 +64,19 @@ public class JdcEngine
         BigDecimal x2 = pop(ds);
         BigDecimal y = f.apply(x1, x2);
         push(ds, y);
+    }
+    
+    public static void dupTop2(Deque<String> ds) {
+        BigDecimal x1 = pop(ds);
+        push(ds, x1);
+        push(ds, x1);
+    }
+    
+    public static void swapTop2(Deque<String> ds) {
+        BigDecimal x1 = pop(ds);
+        BigDecimal x2 = pop(ds);
+        push(ds, x1);
+        push(ds, x2);
     }
     
     //----- Stack mimicry
